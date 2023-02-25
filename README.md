@@ -1,2 +1,4 @@
 # CE_Tracker
-Continuing Education for EMTs
+Continuing Education tracker for EMTs
+
+Uses local SQL database with basic login system using BCrypt for encryption.
