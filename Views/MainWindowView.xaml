@@ -60,7 +60,7 @@
                 <DataGrid.Columns>
 
                <!--    <DataGridTextColumn Header="ID" Width="25" Binding="{Binding ModId}" IsReadOnly="True"/> -->
-                    <DataGridTemplateColumn SortMemberPath="Hours" Header="Mod Date" Width="90" >
+                    <DataGridTemplateColumn SortMemberPath="CEmod" Header="Mod Date" Width="90" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding CEmod, StringFormat=d}" />
