@@ -489,6 +489,17 @@ namespace CE_Tracker.ViewModel
                 StatusBlock = s + " " + DateTime.Now;
  
         }
+        
+                // Calculates total amount of hours of CE done.
+        public float SumHours(ObservableCollection<CE_TableModel> lstDataGrid)
+        {
+            float sumHours = 0;
+            foreach (var item in lstDataGrid)
+            {
+                sumHours += item.Hours;
+            }
+            return sumHours;
+        }
 
 
 
