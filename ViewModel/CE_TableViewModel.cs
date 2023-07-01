@@ -1,4 +1,4 @@
-﻿using CE_Tracker.Model;
+using CE_Tracker.Model;
 using Dapper;
 using FirstFloor.ModernUI.Presentation;
 using log4net;
@@ -15,7 +15,6 @@ using System.Windows;
 using System.Windows.Input;
 
 // TODO:
-// Hours left of each categry, start and stop date for licensure period
 
 
 
@@ -174,7 +173,7 @@ namespace CE_Tracker.ViewModel
 
         }
         */
-        public void PerformBtnRefresh_Click(object sender)
+        private void PerformBtnRefresh_Click(object sender)
         {
             GetRows();
         }
@@ -240,7 +239,7 @@ namespace CE_Tracker.ViewModel
         }
 
         // pull records from SQL database and update datagrid
-        public void GetRows()
+        private void GetRows()
         {
             try
             {
@@ -252,8 +251,8 @@ namespace CE_Tracker.ViewModel
                     var listRows = conn.Query<CE_TableModel>(sql, new { Id = LoginViewModel.CurrentId }).ToList();
 
                     // dapper doesn't support observable collections, have to convert
-                    CE_TableModels = Helper.ConvertToObservableCollection(listRows); 
-                    
+                    CE_TableModels = Helper.ConvertToObservableCollection(listRows);
+                    Debug.WriteLine(SumHours(CE_TableModels));
 
                     Debug.WriteLine("Table records are type: " + CE_TableModels.GetType());
                     foreach(var item in CE_TableModels)
@@ -343,7 +342,7 @@ namespace CE_Tracker.ViewModel
 
 
         // Delete a record/tuple
-        public void PerformBtnDelete_Click(object sender)
+        private void PerformBtnDelete_Click(object sender)
         {
             MessageBoxResult result = MessageBox.Show("Are you sure you want to delete the selected record?", "Delete Record Confirmation",
             MessageBoxButton.YesNo);
@@ -360,7 +359,7 @@ namespace CE_Tracker.ViewModel
  
 
         // When the user selects a tuple
-        public void PerformGridSelectionChanged(object sender)
+        private void PerformGridSelectionChanged(object sender)
         {
             try
             {
@@ -393,7 +392,7 @@ namespace CE_Tracker.ViewModel
 
 
         // When user modifies an existing record/tuple
-        public void PerformBtnModify_Click(object sender)
+        private void PerformBtnModify_Click(object sender)
         {
 
             // maybe change this to switch statement
@@ -458,7 +457,7 @@ namespace CE_Tracker.ViewModel
 
 
         // Command for logging out via menu (other than closing the window via X)
-        public void PerformMenuLogout_Click(object sender)
+        private void PerformMenuLogout_Click(object sender)
         {
             //CONFIRMATION to close
             //Application.Current.MainWindow.Close();
@@ -482,18 +481,18 @@ namespace CE_Tracker.ViewModel
         }
 
         // Update method for status bar at bottom of window
-        public void StatusUpdate(string s) 
+        private void StatusUpdate(string s) 
         {
 
                 log.Info(s);
-                StatusBlock = s + " " + DateTime.Now;
+                StatusBlock = s + " " + DateTime.Now + " Total Hours: " + SumHours(CE_TableModels);
  
         }
-        
-                // Calculates total amount of hours of CE done.
-        public float SumHours(ObservableCollection<CE_TableModel> lstDataGrid)
+
+        // Calculates total amount of hours of CE done.
+        private float SumHours(ObservableCollection<CE_TableModel> lstDataGrid)
         {
-            float sumHours = 0;
+            float sumHours = 0.0f;
             foreach (var item in lstDataGrid)
             {
                 sumHours += item.Hours;
